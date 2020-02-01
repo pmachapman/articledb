@@ -1,0 +1,14 @@
+# Visual Studio 2019 Files
+.vs
+*.suo
+*.user
+Debug
+Release
+
+# Visual Studio Code Files
+.vscode
+
+# Borland C++ 5.5 Files
+*.exe
+*.obj
+*.tds
