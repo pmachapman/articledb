@@ -25,7 +25,7 @@ public:
     void GetAct(MenuAct *act) { *act = action; }
 
     Menu(const char *title, int row, int col,
-         MenuAct act, char *optn...);
+         MenuAct act, const char *optn...);
 
     int Select(int start = 0, MenuAct escFun = 0);
 };

@@ -105,6 +105,7 @@ Bool ArticleDB::Delete()
     {
         articles = articles->next;
         delete article;
+        article = NULL;
     }
     else
     {
@@ -113,6 +114,7 @@ Bool ArticleDB::Delete()
             {
                 art->next = art->next->next;
                 delete article;
+                article = NULL;
                 goto out;
             }
         return true;

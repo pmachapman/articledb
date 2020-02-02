@@ -2,7 +2,7 @@
 #include "Form.h"
 #include <stdarg.h>
 
-Form::Form(const char *title, int top, int left, FormAct act, char *line...)
+Form::Form(const char *title, int top, int left, FormAct act, const char *line...)
     : Window(title, top, left, top, left)
 {
     Field flds[maxFlds];
@@ -12,11 +12,12 @@ Form::Form(const char *title, int top, int left, FormAct act, char *line...)
     register int n = 0, m = 0, i;
     action = act;
     SetKind(formWind);
+
     va_list arg;
     va_start(arg, line);
     while (n < maxFlds && m < maxLits)
     {
-        register char *str = line;
+        register const char *str = line;
         while (*str)
         {
             if (*str == '_' && n < maxFlds)
@@ -25,13 +26,15 @@ Form::Form(const char *title, int top, int left, FormAct act, char *line...)
                 flds[n].pos.col = str - line + 1;
                 flds[n].len = 0;
                 for (flds[n].len = 1; *++str == '_'; ++flds[n].len)
-                    totLen += flds[n++].len + 1;
+                    ;
+                totLen += flds[n++].len + 1;
             }
             else if (m < maxLits)
             {
-                lits[m].data = str;
+                lits[m].data = (char*)str;
                 while (*++str != '\0' && *str != '_')
-                    lits[m].pos.row = rows + 1;
+                    ;
+                lits[m].pos.row = rows + 1;
                 lits[m].pos.col = lits[m].data - line + 1;
                 lits[m].len = str - lits[m].data;
                 ++m;

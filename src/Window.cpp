@@ -1,5 +1,8 @@
 #include "Terminal.h"
 #include "Window.h"
+
+char Window::windBuf[bufSize];
+
 Window::Window(const char *title, int top, int left, int bot, int right)
 {
     if (Terminal::term == 0)
@@ -391,7 +394,7 @@ Window &Window::operator<<(long num)
 Window &Window::operator<<(double num)
 
 {
-    sprintf(windBuf, "%£", num);
+    sprintf(windBuf, "%f", num);
     WriteStr(windBuf, strlen(windBuf));
     return *this;
 

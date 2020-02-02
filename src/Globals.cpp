@@ -2,23 +2,23 @@
 
 // terminal control codes:
 
-char *posCode = "\033([%d;%dH";  // position cursor
-char *alfaCode = "\017";         // normal chars
-char *graphCode = "\016";        // graphic chars
-char *plainCode = "\033[0m";     // plain video
-char *revsCode = "\033[7m";      // reverse video
-char *defCode = "\017\033(0m";   // default: normal+plain
-char *initCode = "\033(B\033)0"; // initialize
-char *clearCode = "\033(2J";     // clear screen
-char *bellCode = "\07";          // wargin bell
+const char *posCode = "\033([%d;%dH";  // position cursor
+const char *alfaCode = "\017";         // normal chars
+const char *graphCode = "\016";        // graphic chars
+const char *plainCode = "\033[0m";     // plain video
+const char *revsCode = "\033[7m";      // reverse video
+const char *defCode = "\017\033(0m";   // default: normal+plain
+const char *initCode = "\033(B\033)0"; // initialize
+const char *clearCode = "\033(2J";     // clear screen
+const char *bellCode = "\07";          // wargin bell
 
 // graphic characters:
-char botRight = 218;
-char topRight = 191;
-char topLeft = 192;
-char botLeft = 217;
-char horizontal = 196;
-char vertical = 170;
+char botRight = '\152';
+char topRight = '\153';
+char topLeft = '\154';
+char botLeft = '\155';
+char horizontal = '\161';
+char vertical = '\170';
 
 Rect::Rect(int top, int left, int bot, int right)
 {

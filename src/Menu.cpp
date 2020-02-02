@@ -3,10 +3,10 @@
 #include "Menu.h"
 #include <stdarg.h>
 
-Menu::Menu(const char *title, int top, int left, MenuAct act, char *optn...)
+Menu::Menu(const char *title, int top, int left, MenuAct act, const char *optn...)
     : Window(title, top, left, top, left)
 {
-    char *optns[maxRows];
+    const char *optns[maxRows];
     register int rows = 0, cols = 0, n;
     action = act;
     SetKind(menuWind);

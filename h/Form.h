@@ -29,7 +29,7 @@ public:
     void GetAct(FormAct *act) { *act = action; }
 
     Form(const char *title, int top, int left,
-         FormAct act, char *name...);
+         FormAct act, const char *name...);
     ~Form();
 
     void Read(int nFld = 0, FormAct escFun = 0);

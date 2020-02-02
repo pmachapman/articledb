@@ -11,7 +11,7 @@
 #define maxLits 64    // max no. of literals in a form
 #define bufSize 512   // buffer size
 #define escape '\033' // escape character
-extern char *posCode, *alfaCode, *graphCode, *plainCode, *revsCode,
+extern const char *posCode, *alfaCode, *graphCode, *plainCode, *revsCode,
     *defCode, *initCode, *clearCode, *bellCode;
 extern char botRight, topRight, topLeft, botLeft, horizontal, vertical;
 #define Bool bool
