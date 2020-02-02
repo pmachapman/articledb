@@ -161,7 +161,7 @@ void Window::Activate()
 {
     if (this == Terminal::curWind && !Hidden())
         return;
-    Rect refBox; // vefresh box
+    Rect refBox; // refresh box
     if (Hidden())
     {
         refBox = bounds;
@@ -170,7 +170,7 @@ void Window::Activate()
     else
     {
         Rect rect = bounds, box;
-        // refBox is initially enpty:
+        // refBox is initially empty:
         refBox = Rect(rect.bot, rect.right, rect.top, rect.left);
         // work out the overlapped area:
         for (Window *wind = this->next; wind != 0; wind = wind->next)

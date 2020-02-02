@@ -26,9 +26,9 @@ Terminal::Terminal(int rows, int cols)
         Error(memErr, "for Region");
 
     // region should be initially blank
-    for (register int r = 0; r < rows; ++r)
+    for (register int row = 0; row < rows; ++row)
     {
-        Window **rgn = region + cols * r;
+        Window **rgn = region + cols * row;
         for (register int col = 0; col < cols; ++col)
             *(rgn + col) = 0;
     }

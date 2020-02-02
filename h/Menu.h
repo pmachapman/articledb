@@ -1,6 +1,5 @@
 #ifndef _MENU_
 #define _MENU_
-#include "Common.h"
 #include "Window.h"
 
 typedef int (*MenuAct)(Menu &, int);

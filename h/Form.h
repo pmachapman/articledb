@@ -1,6 +1,5 @@
 #ifndef _FORM_
 #define _FORM_
-#include "Common.h"
 #include "Window.h"
 
 typedef int (*FormAct)(Form &, int);

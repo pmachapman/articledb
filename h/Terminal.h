@@ -1,6 +1,5 @@
 #ifndef _TERM_
 #define _TERM_
-#include "Common.h"
 #ifdef _WIN32
 #include <io.h>
 #else
@@ -19,6 +18,7 @@
 #include <sgtty.h>
 #include <signal.h>
 #endif
+#include "Common.h"
 
 class Terminal
 {

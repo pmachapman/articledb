@@ -1,7 +1,7 @@
+#include <stdarg.h>
 #include "Terminal.h"
 #include "Window.h"
 #include "Menu.h"
-#include <stdarg.h>
 
 Menu::Menu(const char *title, int top, int left, MenuAct act, const char *optn...)
     : Window(title, top, left, top, left)
