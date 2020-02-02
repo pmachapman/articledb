@@ -11,6 +11,9 @@ Window *Terminal::botWind;
 Window *Terminal::topWind;
 Window *Terminal::curWind;
 char Terminal::termBuf[bufSize];
+#ifndef _WIN32
+sgttyb Terminal::ttym;
+#endif
 
 Terminal::Terminal(int rows, int cols)
 {
@@ -47,8 +50,10 @@ Terminal::Terminal(int rows, int cols)
     sgttyb tmp = ttym; // make a copy
     tmp.sg_flags |= CBREAK; // use cbreak mode
     tmp.sg_flags &= ~ECHO; // use no echo mode
+#ifndef __APPLE__
     if (signal(SIGINT, &Interrupt) == -1)
         Error(sysErr, "for signal");
+#endif
 #endif
     Clear();
     InitChars();

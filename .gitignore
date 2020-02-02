@@ -12,3 +12,7 @@ Release
 *.exe
 *.obj
 *.tds
+
+# Xcode
+.DS_Store
+xcuserdata

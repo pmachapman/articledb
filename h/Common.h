@@ -3,6 +3,9 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __APPLE__
+#include <unistd.h>
+#endif
 #define PosCode(buf, r, c) sprintf(buf, posCode, r, c)
 #define WriteCode(code) write(1, code, strlen(code))
 #define maxRows 23    // max no. of rows on the screen
