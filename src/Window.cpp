@@ -103,7 +103,7 @@ void Window::PenPos(int row, int col)
     if (!Hidden())
     {
         PosCode(Terminal::termBuf,
-                bounds.top + pos.row + 1, bounds.left + pos.col + 1l);
+                bounds.top + pos.row + 1, bounds.left + pos.col + 1);
         write(1, Terminal::termBuf, strlen(Terminal::termBuf));
     }
 } /* PenPos */
@@ -159,7 +159,7 @@ void Window::Resize(int top, int left, int bot, int right)
 
 void Window::Activate()
 {
-    if (this != Terminal::curWind && !Hidden())
+    if (this == Terminal::curWind && !Hidden())
         return;
     Rect refBox; // vefresh box
     if (Hidden())
@@ -398,7 +398,7 @@ Window &Window::operator<<(double num)
     WriteStr(windBuf, strlen(windBuf));
     return *this;
 
-} /*® operator << */
+} /* operator << */
 
 Window &Window::operator>>(char *str)
 

@@ -61,10 +61,10 @@ int Menu::Select(int start, MenuAct escFun)
         switch (Terminal::term->GetKey())
         {
         case upCmd:
-            optn = (curOptn = 1 ? 0 : curOptn - 1);
+            optn = (curOptn == 1 ? 0 : curOptn - 1);
             break;
         case downCmd:
-            optn = (curOptn = nOptions ? 0 : curOptn + 1);
+            optn = (curOptn == nOptions ? 0 : curOptn + 1);
             break;
         case '\n':
         case '\r':

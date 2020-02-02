@@ -76,7 +76,7 @@ struct Rect
     Rect operator+(Rect &rect);
 };
 typedef void (*ErrFun)(int, const char *);
-typedef void (*InterruptFun)(void);
+void Interrupt();
 class Terminal;
 class Window;
 class Menu;

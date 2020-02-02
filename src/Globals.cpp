@@ -1,16 +1,17 @@
 #include "Common.h"
+#include "Terminal.h"
 
 // terminal control codes:
 
-const char *posCode = "\033([%d;%dH";  // position cursor
+const char *posCode = "\033[%d;%dH";  // position cursor
 const char *alfaCode = "\017";         // normal chars
 const char *graphCode = "\016";        // graphic chars
 const char *plainCode = "\033[0m";     // plain video
 const char *revsCode = "\033[7m";      // reverse video
 const char *defCode = "\017\033(0m";   // default: normal+plain
 const char *initCode = "\033(B\033)0"; // initialize
-const char *clearCode = "\033(2J";     // clear screen
-const char *bellCode = "\07";          // wargin bell
+const char *clearCode = "\033[2J";     // clear screen
+const char *bellCode = "\07";          // margin bell
 
 // graphic characters:
 char botRight = '\152';
@@ -51,3 +52,12 @@ Rect Rect::operator+(Rect &rect)
                 bot > rect.bot ? bot : rect.bot,
                 right > rect.right ? right : rect.right);
 } /* operator + */
+
+void Interrupt()
+{
+    Terminal::term->DefaultPen();
+#ifndef _WIN32
+    ioctl(0, TIOCSETP, (char*)&(Terminal::ttym));
+#endif
+    exit(1);
+} /* Interrupt */

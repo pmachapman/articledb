@@ -107,7 +107,7 @@ void Form::Read(int nFld, FormAct escFun)
     GetPos(&pos);
     GetMode(&mode);
     Activate();
-    Bool readAll = nFld = 0;
+    Bool readAll = nFld == 0;
     nFld = (nFld <= 0 ? 1 : (nFld > nFields ? nFields : nFld));
     Field *fld = &fields[nFld - 1];
     PenPos(fld->pos.row, fld->pos.col);

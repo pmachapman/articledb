@@ -1,12 +1,30 @@
 #ifndef _TERM_
 #define _TERM_
 #include "Common.h"
+#ifdef _WIN32
 #include <io.h>
+#else
+#include <sys/ioctl.h>
+#endif
 #include <string.h>
+#ifdef _WIN32
+#include <Windows.h>
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
+#endif
+#ifndef DISABLE_NEWLINE_AUTO_RETURN
+#define DISABLE_NEWLINE_AUTO_RETURN  0x0008
+#endif
+#else
+#include <sgtty.h>
 #include <signal.h>
+#endif
 
 class Terminal
 {
+#ifndef _WIN32
+    static sgttyb ttym;
+#endif
     static ErrFun errFun;
     static int rows, cols;
     static int *screen;
@@ -31,6 +49,8 @@ public:
     void InitChars() { WriteCode(initCode); }
     void Clear() { WriteCode(clearCode); }
     void Bell() { WriteCode(bellCode); }
+    void SetErr(ErrFun ef) { errFun = ef; }
+    void GetErr(ErrFun* ef) { *ef = errFun; }
     Window *BotWind() { return botWind; }
     Window *TopWind() { return topWind; }
     Window *CurWind() { return curWind; }
@@ -41,6 +61,7 @@ public:
     int GetKey();
     void Error(ErrKind err, const char *msg);
     void Message(const char *msg);
+    friend void Interrupt();
     friend class Window;
     friend class Menu;
     friend class Form;

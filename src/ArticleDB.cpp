@@ -69,7 +69,7 @@ ArticleDB::~ArticleDB()
         if (file != 0)
         {
             for (Article *art = articles; art != 0; art = art->next)
-                if (fputs(art->image, file) <= 0 || fputs("\n", file) < 0)
+                if (fputs(art->image, file) <= 0 || fputs("\n", file) <= 0)
                     break;
             fclose(file);
         }
@@ -212,7 +212,7 @@ enum MenuCmds
     quitCmd
 };
 
-void main()
+int main()
 {
     Terminal term;
     ArticleDB db("articleFile");
@@ -307,4 +307,6 @@ void main()
             quit = true;
         }
     } /* while */
+
+    return 0;
 } /* main */

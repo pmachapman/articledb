@@ -32,6 +32,24 @@ Terminal::Terminal(int rows, int cols)
         for (register int col = 0; col < cols; ++col)
             *(rgn + col) = 0;
     }
+
+#ifdef _WIN32
+    // Setup console
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    dwMode |= DISABLE_NEWLINE_AUTO_RETURN;
+    SetConsoleMode(hOut, dwMode);
+#else
+    if (ioctl(0, TIOCSETP, (char*)&ttym) == -1) // restore original mode
+        Error(sysErr, "for ioctl");
+    sgttyb tmp = ttym; // make a copy
+    tmp.sg_flags |= CBREAK; // use cbreak mode
+    tmp.sg_flags &= ~ECHO; // use no echo mode
+    if (signal(SIGINT, &Interrupt) == -1)
+        Error(sysErr, "for signal");
+#endif
     Clear();
     InitChars();
 }
@@ -40,6 +58,10 @@ Terminal::~Terminal()
 {
     delete screen;
     delete region;
+#ifndef _WIN32
+    if (ioctl(0, TIOCGETP, (char *)&ttym) == -1) // get original mode
+        Error(sysErr, "for ioctl");
+#endif
     DefaultPen();
 }
 
@@ -50,11 +72,11 @@ void Terminal::Refresh(Rect &rect, Window *from)
     if (rect.Empty())
         return;
     if (from == 0)
-        from = topWind;
+        from = botWind;
     width = rect.right - rect.left + 1;
 
     // make rect and its region blank
-    for (row = rect.top; row <= rect.top; ++row)
+    for (row = rect.top; row <= rect.bot; ++row)
     {
         int *scr = screen + row * col + rect.left;
         Window **rgn = region + row * col + rect.left;
@@ -156,7 +178,7 @@ int Terminal::GetKey()
                 case 'A':
                     return upCmd;
                 case 'B':
-                    return upCmd;
+                    return downCmd;
                 case 'C':
                     return rightCmd;
                 case 'D':
@@ -178,7 +200,7 @@ void Terminal::Error(ErrKind err, const char *msg)
     {
         sprintf(termBuf, "Error:%d %s \n", err, msg);
         write(1, termBuf, strlen(termBuf));
-        //Interrupt();
+        Interrupt();
     }
 }
 
