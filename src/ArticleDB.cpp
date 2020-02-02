@@ -16,10 +16,10 @@ class ArticleDB
     char *fileName;                  // DB file name
     Article *articles;               // linked-list of articles
     Article *select[maxSelect];      // selected articles
-    int nSelect = 0;                 // no. of selected articles
-    int curSel = 0;                  // currently selected article
+    int nSelect;                 // no. of selected articles
+    int curSel;                  // currently selected article
     static char artBuf[bufSize];     // article buffer
-    Bool update = false;             // update flag
+    Bool update;             // update flag
     Bool Match(const char *pattern, const char *image);
 
 public:
