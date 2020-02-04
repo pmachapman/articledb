@@ -53,9 +53,7 @@ Terminal::Terminal(int rows, int cols)
     HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
     if (hIn == INVALID_HANDLE_VALUE)
         Error(sysErr, "for GetStdHandle(Input)");
-    if (!GetConsoleMode(hIn, &dwMode))
-        Error(sysErr, "for GetConsoleMode(Input)");
-    dwMode |= ENABLE_VIRTUAL_TERMINAL_INPUT;
+    dwMode = ENABLE_VIRTUAL_TERMINAL_INPUT;
     if (!SetConsoleMode(hIn, dwMode))
         Error(sysErr, "for SetConsoleMode(Input)");
 #else
