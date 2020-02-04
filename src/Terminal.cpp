@@ -56,6 +56,9 @@ Terminal::Terminal(int rows, int cols)
     dwMode = ENABLE_VIRTUAL_TERMINAL_INPUT;
     if (!SetConsoleMode(hIn, dwMode))
         Error(sysErr, "for SetConsoleMode(Input)");
+
+    // Fix the "two enters required" bug, but break Unicode:
+    setmode(_fileno(stdin), _O_BINARY);
 #else
     if (ioctl(0, TIOCSETP, (char*)&ttym) == -1) // restore original mode
         Error(sysErr, "for ioctl");

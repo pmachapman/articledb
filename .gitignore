@@ -16,3 +16,6 @@ Release
 # Xcode
 .DS_Store
 xcuserdata
+
+# Files created by the program
+articleFile

@@ -2,6 +2,7 @@
 #define _TERM_
 #ifdef _WIN32
 #include <io.h>
+#include <fcntl.h>
 #else
 #include <sys/ioctl.h>
 #endif
