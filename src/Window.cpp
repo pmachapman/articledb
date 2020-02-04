@@ -60,7 +60,8 @@ void Window::SetArea(int top, int left, int bot, int right)
             *line++ = horizontal | graphPen;
         *line++ = topRight | graphPen;
         for (row = 1; row < height - 1; ++row)
-        { // draw middle of window
+        {
+            // draw middle of window
             *line++ = vertical | graphPen;
             for (col = 1; col < width - 1; ++col)
                 *line++ = ' ';
@@ -71,11 +72,13 @@ void Window::SetArea(int top, int left, int bot, int right)
             *line++ = horizontal | graphPen;
         *line++ = botRight | graphPen;
     }
+
     if (title != 0)
-    { // draw the title
+    {
+        // draw the title
         const char *name = title;
         line = area + 1;
-        for (col = 1; col < width - 1l && *name; ++col)
+        for (col = 1; col < width - 1 && *name; ++col)
             *line++ = *name++ | revsPen;
     }
 } /* SetArea */

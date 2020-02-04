@@ -29,4 +29,4 @@ public:
     int Select(int start = 0, MenuAct escFun = 0);
 };
 
-#endif _MENU_
+#endif

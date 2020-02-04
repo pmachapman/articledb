@@ -14,6 +14,9 @@
 #ifndef DISABLE_NEWLINE_AUTO_RETURN
 #define DISABLE_NEWLINE_AUTO_RETURN  0x0008
 #endif
+#ifndef ENABLE_VIRTUAL_TERMINAL_INPUT
+#define ENABLE_VIRTUAL_TERMINAL_INPUT  0x0200
+#endif
 #else
 #include <sgtty.h>
 #include <signal.h>
@@ -66,4 +69,4 @@ public:
     friend class Menu;
     friend class Form;
 };
-#endif _TERM_
+#endif

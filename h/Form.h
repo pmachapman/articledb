@@ -44,4 +44,4 @@ public:
     void GetAll(char *vals, Bool truncate = false);
 };
 
-#endif _FORM_
+#endif

@@ -84,4 +84,4 @@ class Terminal;
 class Window;
 class Menu;
 class Form;
-#endif _COMMON_
+#endif

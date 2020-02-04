@@ -6,8 +6,8 @@ const char *posCode = "\033[%d;%dH";  // position cursor
 #ifdef _WIN32
 const char *alfaCode = "\033(B";         // normal chars
 const char *graphCode = "\033(0";        // graphic chars
-const char* defCode = "\033(B\033(0m";   // default: normal+plain
-const char* initCode = "\033(B";         // initialize
+const char* defCode = "\033(B\033[0m";   // default: normal+plain
+const char* initCode = "\033(B\033[0m\033[?1h";         // initialize
 #else
 const char* alfaCode = "\017";         // normal chars
 const char* graphCode = "\016";        // graphic chars

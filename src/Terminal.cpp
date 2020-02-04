@@ -37,13 +37,27 @@ Terminal::Terminal(int rows, int cols)
     }
 
 #ifdef _WIN32
-    // Setup console
+    // Set up console output
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+        Error(sysErr, "for GetStdHandle(Output)");
     DWORD dwMode = 0;
-    GetConsoleMode(hOut, &dwMode);
+    if (!GetConsoleMode(hOut, &dwMode))
+        Error(sysErr, "for GetConsoleMode(Output)");
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     dwMode |= DISABLE_NEWLINE_AUTO_RETURN;
-    SetConsoleMode(hOut, dwMode);
+    if (!SetConsoleMode(hOut, dwMode))
+        Error(sysErr, "for SetConsoleMode(Output)");
+
+    // Set up console input
+    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+    if (hIn == INVALID_HANDLE_VALUE)
+        Error(sysErr, "for GetStdHandle(Input)");
+    if (!GetConsoleMode(hIn, &dwMode))
+        Error(sysErr, "for GetConsoleMode(Input)");
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_INPUT;
+    if (!SetConsoleMode(hIn, dwMode))
+        Error(sysErr, "for SetConsoleMode(Input)");
 #else
     if (ioctl(0, TIOCSETP, (char*)&ttym) == -1) // restore original mode
         Error(sysErr, "for ioctl");
@@ -106,7 +120,7 @@ void Terminal::Refresh(Rect &rect, Window *from)
                 for (row = box.top; row <= box.bot; ++row)
                 {
                     int *scr = wind->area + (row - wind->bounds.top) * (windWidth + leftDiff);
-                    int *dest = screen + row + cols + box.left;
+                    int *dest = screen + row * cols + box.left;
                     Window **rgn = region + row * cols + box.left;
                     for (col = 0; col < boxWidth; ++col)
                     {

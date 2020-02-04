@@ -51,4 +51,4 @@ public:
     Window &operator>>(double &);
     friend class Terminal;
 };
-#endif _WIND_
+#endif
