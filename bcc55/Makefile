@@ -1,5 +1,5 @@
 CC = bcc32
-CFLAGS = -P -y -v -w -I$(INC) -eArticleDB.exe
+CFLAGS = -P -O2 -w -I$(INC) -eArticleDB.exe
 
 SRC = ..\src
 INC = ..\h

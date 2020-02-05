@@ -73,7 +73,7 @@ void Window::SetArea(int top, int left, int bot, int right)
         *line++ = botRight | graphPen;
     }
 
-    if (title != 0)
+    if (title != 0 && line)
     {
         // draw the title
         const char *name = title;
@@ -350,8 +350,8 @@ void Window::ReadStr(char *string, int len)
         char ch;
         if (n < room && isprint(key))
         {
-            *line++ = (string[n++] = key) | mode;
-            write(0, &(ch = key), 1);
+            *line++ = (string[n++] = (char)key) | mode;
+            write(0, &(ch = (char)key), 1);
             ++pos.col;
         }
         else if (key == '\r' || key == '\n')

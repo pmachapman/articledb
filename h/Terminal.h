@@ -26,7 +26,9 @@
 
 class Terminal
 {
-#ifndef _WIN32
+#ifdef _WIN32
+    static DWORD oldInMode, oldOutMode;
+#else
     static sgttyb ttym;
 #endif
     static ErrFun errFun;
@@ -65,7 +67,11 @@ public:
     int GetKey();
     void Error(ErrKind err, const char *msg);
     void Message(const char *msg);
+#if _WIN32
+    friend BOOL WINAPI Interrupt(DWORD fdwCtrlType);
+#else
     friend void Interrupt();
+#endif
     friend class Window;
     friend class Menu;
     friend class Form;

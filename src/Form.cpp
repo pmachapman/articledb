@@ -189,7 +189,7 @@ void Form::Read(int nFld, FormAct escFun)
                 HiliteField(nFld, true);
                 ++idx;
             }
-            write(1, &(ch = key), 1);
+            write(1, &(ch = (char)key), 1);
             *(fld->data + idx - 1) = ch;
             continue;
         } /* switch */

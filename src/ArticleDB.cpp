@@ -308,5 +308,5 @@ int main()
         }
     } /* while */
 
-    return 0;
+    Interrupt();
 } /* main */

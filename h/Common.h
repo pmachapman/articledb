@@ -8,7 +8,7 @@
 #endif
 #define PosCode(buf, r, c) sprintf(buf, posCode, r, c)
 #define WriteCode(code) write(1, code, strlen(code))
-#define maxRows 23    // max no. of rows on the screen
+#define maxRows 25    // max no. of rows on the screen
 #define maxCols 80    // max no. of columns on the screen
 #define maxFlds 64    // max no. of fields in a form
 #define maxLits 64    // max no. of literals in a form
@@ -47,8 +47,10 @@ enum WindFlags
     hidden = 0x0100,  // invisible window
     kindMask = 0x00FF // window kind mask
 };
-enum ErrKind
-{ // error kind
+enum ErrKind // error kind
+{
+    noErr,
+    ctrlC,
     memErr,
     termErr,
     sysErr // memory, terminal, system error
@@ -79,7 +81,11 @@ struct Rect
     Rect operator+(Rect &rect);
 };
 typedef void (*ErrFun)(int, const char *);
+#if _WIN32
+BOOL WINAPI Interrupt(DWORD fdwCtrlType = CTRL_C_EVENT);
+#else
 void Interrupt();
+#endif
 class Terminal;
 class Window;
 class Menu;

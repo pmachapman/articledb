@@ -11,7 +11,10 @@ Window *Terminal::botWind;
 Window *Terminal::topWind;
 Window *Terminal::curWind;
 char Terminal::termBuf[bufSize];
-#ifndef _WIN32
+#ifdef _WIN32
+DWORD Terminal::oldInMode;
+DWORD Terminal::oldOutMode;
+#else
 sgttyb Terminal::ttym;
 #endif
 
@@ -44,6 +47,7 @@ Terminal::Terminal(int rows, int cols)
     DWORD dwMode = 0;
     if (!GetConsoleMode(hOut, &dwMode))
         Error(sysErr, "for GetConsoleMode(Output)");
+    Terminal::oldOutMode = dwMode;
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     dwMode |= DISABLE_NEWLINE_AUTO_RETURN;
     if (!SetConsoleMode(hOut, dwMode))
@@ -53,12 +57,22 @@ Terminal::Terminal(int rows, int cols)
     HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
     if (hIn == INVALID_HANDLE_VALUE)
         Error(sysErr, "for GetStdHandle(Input)");
+    if (!GetConsoleMode(hIn, &dwMode))
+        Error(sysErr, "for GetConsoleMode(Input)");
+    Terminal::oldInMode = dwMode;
     dwMode = ENABLE_VIRTUAL_TERMINAL_INPUT;
     if (!SetConsoleMode(hIn, dwMode))
         Error(sysErr, "for SetConsoleMode(Input)");
 
+    // Register the Ctrl+C handler
+    // This only works if ENABLE_PROCESSED_INPUT is enabled, which is not
+    // Instead, the handler is called by our own code managing Ctrl+C
+    if (!SetConsoleCtrlHandler(Interrupt, TRUE))
+        Error(sysErr, "for SetConsoleCtrlHandler");
+
     // Fix the "two enters required" bug, but break Unicode:
-    setmode(_fileno(stdin), _O_BINARY);
+    if (!setmode(_fileno(stdin), _O_BINARY))
+        Error(sysErr, "for setmode");
 #else
     if (ioctl(0, TIOCSETP, (char*)&ttym) == -1) // restore original mode
         Error(sysErr, "for ioctl");
@@ -163,7 +177,7 @@ void Terminal::Refresh(Rect &rect, Window *from)
                     buf = CopyCode(buf, revsCode);
                 oldMode = mode;
             }
-            *buf++ = *scr++ & charMask;
+            *buf++ = (char)(*scr++ & charMask);
         }
         write(1, termBuf, buf - termBuf);
     }

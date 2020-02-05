@@ -7,15 +7,16 @@ const char *alfaCode = "\033(B";                // normal chars
 const char *graphCode = "\033(0";               // graphic chars
 const char* defCode = "\033[!p\033[0m";         // default: normal+plain
 const char* initCode = "\033(B\033[0m\033[?1l"; // initialize
+const char* clearCode = "\033[1;1H\033[2J";     // clear screen
 #else
 const char* alfaCode = "\017";         // normal chars
 const char* graphCode = "\016";        // graphic chars
 const char* defCode = "\017\033(0m";   // default: normal+plain
 const char* initCode = "\033(B\033)0"; // initialize
+const char* clearCode = "\033[2J";     // clear screen
 #endif
 const char *plainCode = "\033[0m";     // plain video
 const char *revsCode = "\033[7m";      // reverse video
-const char *clearCode = "\033[2J";     // clear screen
 const char *bellCode = "\07";          // margin bell
 
 // graphic characters:
@@ -58,11 +59,50 @@ Rect Rect::operator+(Rect &rect)
                 right > rect.right ? right : rect.right);
 } /* operator + */
 
+#if _WIN32
+BOOL WINAPI Interrupt(DWORD fdwCtrlType)
+{
+    // Get output handle
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+        exit(sysErr);
+
+    // Get input handle
+    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+    if (hIn == INVALID_HANDLE_VALUE)
+        exit(sysErr);
+
+    switch (fdwCtrlType)
+    {
+    case CTRL_C_EVENT: // Handle the CTRL-C signal.
+    case CTRL_CLOSE_EVENT: // CTRL-CLOSE: confirm that the user wants to exit.
+
+        // Reset via ANSI
+        Terminal::term->DefaultPen();
+        Terminal::term->Clear();
+
+        // Reset console output to how we received it
+        if (!SetConsoleMode(hOut, Terminal::oldOutMode))
+            exit(sysErr);
+
+        // Reset console input to how we received it
+        if (!SetConsoleMode(hIn, Terminal::oldInMode))
+            exit(sysErr);
+
+        // Exit
+        exit(ctrlC);
+        return TRUE;
+
+        // Pass other signals to the next handler. 
+    default:
+        return FALSE;
+    }
+}
+#else
 void Interrupt()
 {
     Terminal::term->DefaultPen();
-#ifndef _WIN32
     ioctl(0, TIOCSETP, (char*)&(Terminal::ttym));
-#endif
     exit(1);
 } /* Interrupt */
+#endif
