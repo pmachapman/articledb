@@ -31,7 +31,7 @@ Form::Form(const char *title, int top, int left, FormAct act, const char *line..
             }
             else if (m < maxLits)
             {
-                lits[m].data = (char*)str;
+                lits[m].data = (char *)str;
                 while (*++str != '\0' && *str != '_')
                     ;
                 lits[m].pos.row = rows + 1;

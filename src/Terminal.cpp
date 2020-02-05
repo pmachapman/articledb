@@ -23,7 +23,7 @@ Terminal::Terminal(int rows, int cols)
     typedef void *VoidPtr;
     if (term != 0)
         Error(termErr, "in Terminal"); // make sure only called once
-    term = this; // self-reference
+    term = this;                       // self-reference
     Terminal::rows = rows = (rows <= 0 || rows > maxRows ? maxRows : rows);
     Terminal::cols = cols = (cols <= 0 || cols > maxCols ? maxCols : cols);
     if ((screen = new int[rows * cols]) == 0)
@@ -64,9 +64,7 @@ Terminal::Terminal(int rows, int cols)
     if (!SetConsoleMode(hIn, dwMode))
         Error(sysErr, "for SetConsoleMode(Input)");
 
-    // Register the Ctrl+C handler
-    // This only works if ENABLE_PROCESSED_INPUT is enabled, which is not
-    // Instead, the handler is called by our own code managing Ctrl+C
+    // Register the Ctrl+Close handler
     if (!SetConsoleCtrlHandler(Interrupt, TRUE))
         Error(sysErr, "for SetConsoleCtrlHandler");
 
@@ -74,11 +72,11 @@ Terminal::Terminal(int rows, int cols)
     if (!setmode(_fileno(stdin), _O_BINARY))
         Error(sysErr, "for setmode");
 #else
-    if (ioctl(0, TIOCSETP, (char*)&ttym) == -1) // restore original mode
+    if (ioctl(0, TIOCSETP, (char *)&ttym) == -1) // restore original mode
         Error(sysErr, "for ioctl");
-    sgttyb tmp = ttym; // make a copy
+    sgttyb tmp = ttym;      // make a copy
     tmp.sg_flags |= CBREAK; // use cbreak mode
-    tmp.sg_flags &= ~ECHO; // use no echo mode
+    tmp.sg_flags &= ~ECHO;  // use no echo mode
 #ifndef __APPLE__
     if (signal(SIGINT, &Interrupt) == -1)
         Error(sysErr, "for signal");

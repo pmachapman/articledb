@@ -10,13 +10,13 @@
 #ifdef _WIN32
 #include <Windows.h>
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
-#define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #endif
 #ifndef DISABLE_NEWLINE_AUTO_RETURN
-#define DISABLE_NEWLINE_AUTO_RETURN  0x0008
+#define DISABLE_NEWLINE_AUTO_RETURN 0x0008
 #endif
 #ifndef ENABLE_VIRTUAL_TERMINAL_INPUT
-#define ENABLE_VIRTUAL_TERMINAL_INPUT  0x0200
+#define ENABLE_VIRTUAL_TERMINAL_INPUT 0x0200
 #endif
 #else
 #include <sgtty.h>
@@ -56,7 +56,7 @@ public:
     void Clear() { WriteCode(clearCode); }
     void Bell() { WriteCode(bellCode); }
     void SetErr(ErrFun ef) { errFun = ef; }
-    void GetErr(ErrFun* ef) { *ef = errFun; }
+    void GetErr(ErrFun *ef) { *ef = errFun; }
     Window *BotWind() { return botWind; }
     Window *TopWind() { return topWind; }
     Window *CurWind() { return curWind; }
